@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html lang="es-MX">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<title>PÁSALA · Sal de mar de México — ¿Y si miras de nuevo?</title>
+<meta name="description" content="PÁSALA: sal de mar de México. Una sal para la mesa y un gesto para recordar que todavía puedes elegir. Lista de espera del Lote Fundador." />
+<meta name="theme-color" content="#0B1F3A" />
+<meta property="og:title" content="PÁSALA · ¿Y si miras de nuevo?" />
+<meta property="og:description" content="Sal de mar de México. Una sal para la mesa. Un gesto para recordar que todavía puedes elegir." />
+<meta property="og:type" content="website" />
+<meta property="og:locale" content="es_MX" />
+<!-- TODO: og:image / og:url cuando exista dominio -->
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='16' fill='%230B1F3A'/%3E%3Cpath d='M16 6l7 8-7 12-7-12z' fill='%23C5A059'/%3E%3C/svg%3E" />
+<link rel="preload" href="fonts/playfair.woff2" as="font" type="font/woff2" crossorigin />
+<link rel="preload" href="fonts/jost.woff2" as="font" type="font/woff2" crossorigin />
+<link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+
+<a class="skip" href="#lista">Ir a la lista de espera</a>
+
+<!-- ============ 0 · NAV ============ -->
+<header class="nav" id="nav">
+  <a class="brand" href="#inicio" aria-label="PÁSALA — inicio">
+    <span class="brand__word" aria-hidden="true">P<span class="brand__a">A<svg class="brand__gem" viewBox="0 0 20 22" aria-hidden="true"><use href="#gem"/></svg></span>SALA</span>
+  </a>
+  <nav class="nav__links" id="navlinks" aria-label="Principal">
+    <a href="#historia">La historia</a>
+    <a href="#gesto">El gesto</a>
+    <a href="#fundador">Lote fundador</a>
+    <a href="#lista">Lista de espera</a>
+    <a href="#contacto">Contacto</a>
+  </nav>
+  <a class="btn btn--gold btn--sm nav__cta" href="#lista">Unirme a la lista</a>
+  <button class="nav__toggle" id="navtoggle" aria-label="Abrir menú" aria-expanded="false" aria-controls="navlinks"><span></span><span></span></button>
+</header>
+
+<!-- SVG symbols -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <linearGradient id="goldg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#E6CB8C"/><stop offset=".5" stop-color="#C5A059"/><stop offset="1" stop-color="#9C7A38"/>
+    </linearGradient>
+    <symbol id="gem" viewBox="0 0 20 22">
+      <path d="M10 1l7.5 7.5L10 21 2.5 8.5z" fill="url(#goldg)"/>
+      <path d="M10 1l3 7.5H7z" fill="#F3E3B5" opacity=".75"/>
+      <path d="M2.5 8.5H17.5L10 21z" fill="#000" opacity=".12"/>
+      <path d="M10 1l7.5 7.5L10 21 2.5 8.5z" fill="none" stroke="#8A6A2C" stroke-width=".5"/>
+    </symbol>
+    <symbol id="wave" viewBox="0 0 240 24">
+      <path d="M2 12 C 14 -2, 26 -2, 38 12 S 62 26, 74 12 S 98 -2, 110 12 S 134 26, 146 12 S 170 -2, 182 12 S 206 26, 218 12 S 232 4, 238 12" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
+    </symbol>
+  </defs>
+</svg>
+
+<main id="inicio">
+
+<!-- ============ 1 · HERO ============ -->
+<section class="hero photo dark" id="hero" aria-label="Inicio">
+  <div class="photo__img" data-parallax="0.12"><img src="img/gesto.jpg" alt="Una mano deja caer granos de sal de mar sobre otra mano abierta, sobre lino claro" fetchpriority="high" /></div>
+  <div class="photo__veil hero__veil"></div>
+  <div class="hero__inner wrap">
+    <p class="eyebrow reveal" style="--d:.1s">Sal de mar de México</p>
+    <h1 class="hero__title reveal" style="--d:.25s">¿Y si miras<br />de nuevo?</h1>
+    <svg class="wave wave--hero reveal" style="--d:.45s" aria-hidden="true"><use href="#wave"/></svg>
+    <p class="hero__lead reveal" style="--d:.55s">Una sal para la mesa. Un gesto para recordar que todavía puedes elegir.</p>
+    <div class="hero__cta reveal" style="--d:.75s">
+      <a class="btn btn--gold" href="#lista">Quiero entrar a la lista</a>
+      <a class="link-soft" href="#historia">Conoce la historia <span aria-hidden="true">↓</span></a>
+    </div>
+    <p class="micro reveal" style="--d:.9s">Lote fundador de 100 piezas · Lugares limitados</p>
+  </div>
+  <a class="scrollcue" href="#historia" aria-label="Bajar"><span></span></a>
+</section>
+
+<!-- ============ 2 · LA HISTORIA ============ -->
+<section class="story paper" id="historia">
+  <div class="story__grid wrap">
+    <div class="story__text">
+      <p class="eyebrow eyebrow--slate reveal">De dónde viene esto</p>
+      <h2 class="h-display reveal">Empezó con una pregunta en la mesa.</h2>
+      <span class="rule reveal"></span>
+      <div class="dialogue">
+        <p class="reveal">Un niño prueba su comida y pide la sal. Su mamá la deja sobre la mesa, como siempre.</p>
+        <p class="line reveal">—¿Por qué siempre haces eso, mamá?</p>
+        <p class="line reveal">—Porque es de mala suerte pasar la sal directamente en la mano.</p>
+        <p class="line reveal">—¿Pero por qué?</p>
+        <p class="line reveal">—Porque así me enseñaron.</p>
+        <p class="reveal">El niño pensó un momento. «Tú cocinas con amor, y a mí me encanta tu comida. Si te doy la sal en la mano… ¿nos hacemos daño?»</p>
+        <p class="reveal">La mamá guardó silencio. Lo miró. Y sonrió.</p>
+        <p class="line reveal">—Quizá nunca nos detuvimos a preguntarnos si es cierto.</p>
+      </div>
+      <p class="story__close serif reveal">Desde ese día, cada vez que alguien dice «pásala», ya no es solamente la sal. Es una pequeña invitación a <em>mirar de nuevo</em>.</p>
+      <p class="reveal"><span class="ph" title="Placeholder: enlace al Archivo / Historias PÁSALA cuando exista">Leer la historia completa → [URL Archivo / Historias PÁSALA, cuando exista]</span></p>
+    </div>
+    <figure class="story__photo reveal-img">
+      <img src="img/historia.jpg" alt="Una madre sonríe mientras su hija toca granos de sal gruesa en un plato de cerámica sobre una mesa de madera" loading="lazy" />
+    </figure>
+  </div>
+</section>
+
+<!-- ============ 3 · LA SAL, LA PAUSA ============ -->
+<section class="pause photo dark" id="sal">
+  <div class="photo__img" data-parallax="0.1"><img src="img/dusk-cierre.jpg" alt="" loading="lazy" /></div>
+  <div class="photo__veil pause__veil"></div>
+  <div class="wrap pause__inner">
+    <p class="eyebrow reveal">¿Por qué la sal?</p>
+    <h2 class="h-display h-display--light reveal">Porque siempre ha estado ahí.</h2>
+    <p class="pause__lead reveal">Viene de un origen. Se transforma. Viaja. Pasa de mano en mano. Llega a nuestra mesa. La vemos todos los días… y muchas veces dejamos de verla.</p>
+    <p class="pause__quote serif reveal">La sal no transforma a nadie. Nos recuerda que podemos hacerlo nosotros.</p>
+    <ol class="cards">
+      <li class="card reveal" style="--d:.05s">
+        <span class="card__n">01</span>
+        <h3>Origen</h3>
+        <p>Sal de mar de México.</p>
+        <p class="card__ph"><span class="ph" title="Placeholder: origen exacto / salinera">[Origen exacto / salinera: confirmar cuando esté cerrado el proveedor]</span></p>
+      </li>
+      <li class="card reveal" style="--d:.18s">
+        <span class="card__n">02</span>
+        <h3>Mesa</h3>
+        <p>Hecha para estar a la vista, para compartirse, para usarse cada día.</p>
+      </li>
+      <li class="card reveal" style="--d:.31s">
+        <span class="card__n">03</span>
+        <h3>Pausa</h3>
+        <p>Un instante pequeño, en tus manos, para elegir cómo quieres vivir lo que sigue.</p>
+      </li>
+    </ol>
+  </div>
+</section>
+
+<!-- ============ 4 · EL GESTO ============ -->
+<section class="gesture photo dark" id="gesto">
+  <div class="photo__img" data-parallax="0.12"><img src="img/mesa.jpg" alt="Dos personas comparten una mesa junto al mar; un frasco de vidrio con sal gruesa entre sus manos" loading="lazy" /></div>
+  <div class="photo__veil gesture__veil"></div>
+  <div class="wrap gesture__inner">
+    <p class="eyebrow reveal">El gesto</p>
+    <h2 class="gesture__title reveal">Pasar<br class="only-sm" /> la sal.</h2>
+    <p class="gesture__lead reveal">Pasamos la sal. Pero también pasamos historias, costumbres, creencias, valores, miedos, cuidado y amor.</p>
+    <p class="gesture__ask reveal">Por eso, cada vez que alguien te la pida, te invitamos a hacerte una sola pregunta:</p>
+    <p class="gesture__q serif reveal">¿Qué estás pasando?</p>
+
+    <ol class="steps" aria-label="Cuatro pasos">
+      <li class="reveal" style="--d:.05s"><span class="steps__dot">01</span><span class="steps__t">Parar</span></li>
+      <li class="reveal" style="--d:.18s"><span class="steps__dot">02</span><span class="steps__t">Mirar</span></li>
+      <li class="reveal" style="--d:.31s"><span class="steps__dot">03</span><span class="steps__t">Recordar</span></li>
+      <li class="reveal" style="--d:.44s"><span class="steps__dot steps__dot--out">04</span><span class="steps__t">Elegir</span></li>
+    </ol>
+
+    <p class="gesture__note reveal">No necesitas escapar de la vida para encontrar un momento así. Está aquí: en la mesa, en tus manos, en este instante.</p>
+    <p class="gesture__close serif reveal">No venimos a decirte qué mirar. Venimos a invitarte a mirar de nuevo.</p>
+  </div>
+</section>
+
+<!-- ============ 5 · LO QUE ESTAMOS CONSTRUYENDO ============ -->
+<section class="build paper" id="construimos">
+  <div class="build__grid wrap">
+    <div class="build__text">
+      <p class="eyebrow eyebrow--slate reveal">Lo que estamos</p>
+      <h2 class="h-display h-display--xl reveal">construyendo</h2>
+      <span class="rule reveal"></span>
+      <ul class="flow">
+        <li class="reveal" style="--d:.05s"><b>Origen</b><span>nacemos de la sal del mar y de nuestra gente</span></li>
+        <li class="reveal" style="--d:.15s"><b>Conexión</b><span>creamos puentes que unen historias y comunidades</span></li>
+        <li class="reveal" style="--d:.25s"><b>Elección</b><span>elegimos hacer las cosas con intención</span></li>
+        <li class="reveal" style="--d:.35s"><b>Libertad</b><span>dejamos espacio para que cada historia sea tuya</span></li>
+      </ul>
+      <p class="build__close reveal">Una marca de sal.<br />Un ritual para compartir.<br />Una invitación a crear juntos.</p>
+    </div>
+    <figure class="build__photo reveal-img">
+      <img src="img/construyendo.jpg" alt="Una mano deja caer sal gruesa en un cuenco de cerámica frente a una costa desenfocada" loading="lazy" />
+    </figure>
+  </div>
+</section>
+
+<!-- ============ 6 · LOTE FUNDADOR ============ -->
+<section class="founder photo dark" id="fundador">
+  <div class="photo__img photo__img--soft" data-parallax="0.08"><img src="img/hero-jar.jpg" alt="" loading="lazy" /></div>
+  <div class="photo__veil founder__veil"></div>
+  <div class="wrap founder__inner">
+    <div class="founder__head">
+      <p class="eyebrow reveal">Lote fundador · 100 piezas</p>
+      <h2 class="h-display h-display--light reveal">Cien frascos.<br />Cien números.<br />Cien mesas.</h2>
+      <p class="founder__lead reveal">La primera edición de PÁSALA es pequeña a propósito. Cada pieza lleva un <b>número fijo del 001 al 100</b> y es parte de la primera historia de la marca.</p>
+    </div>
+
+    <div class="founder__panel reveal">
+      <div class="seal" aria-label="Sello Nº 001 a 100"><span>Nº</span><b>001–100</b></div>
+      <h3 class="panel__h">Ficha</h3>
+      <ul class="spec">
+        <li>Sal de mar de México</li>
+        <li>Frasco de vidrio de aprox. 250 ml <span class="ph" title="Placeholder: medida real">[ml vs. g del contenido neto: confirmar con ficha técnica]</span></li>
+        <li>Numeración individual 001–100</li>
+        <li>Certificado digital de tu número <span class="ph" title="Placeholder">[en PDF, con un mensaje corto]</span></li>
+        <li>Edición limitada · una sola tirada <span class="ph">[confirmar]</span></li>
+      </ul>
+      <p class="fine">Imagen ilustrativa. <span class="ph">[foto / render final del frasco cuando exista]</span></p>
+    </div>
+
+    <div class="founder__panel founder__panel--incl reveal" style="--d:.15s">
+      <h3 class="panel__h">Lo que incluye ser Fundador</h3>
+      <ol class="incl">
+        <li><b>Tu número fijo</b> y tu certificado.</li>
+        <li><b>Tu ficha en el Archivo de lo que Pasamos</b> — tu nombre y tu historia, con tu firma.</li>
+        <li><b>Primer lote de la Edición Fundadora</b>, cuando esté listo.</li>
+        <li><b>Precio congelado de por vida</b> dentro del Círculo PÁSALA, cuando abra.</li>
+        <li><b>Para los primeros 100:</b> voto en la pregunta del mes, un live privado de Fundadores y acceso anticipado a lanzamientos de envase. <span class="ph">[Confirmar beneficios finales de Ola 1 antes de publicar]</span></li>
+      </ol>
+      <dl class="meta">
+        <div><dt>Precio de lista fundador</dt><dd><span class="ph">[PRECIO — por definir]</span></dd></div>
+        <div><dt>Entrega estimada</dt><dd><span class="ph">[FECHA / plazo — por confirmar con proveedor]</span></dd></div>
+      </dl>
+      <p class="fine">Los beneficios del Lote Fundador no incluyen regalías, participación en ventas ni membresía activa. <span class="ph">[Letra chica / política de entrega y devoluciones: confirmar con TyC de venta]</span></p>
+      <a class="btn btn--gold" href="#lista">Reservar mi lugar en la lista</a>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 7 · LISTA DE ESPERA ============ -->
+<section class="waitlist photo dark" id="lista">
+  <div class="photo__img" data-parallax="0.1"><img src="img/manos.jpg" alt="" loading="lazy" /></div>
+  <div class="photo__veil waitlist__veil"></div>
+  <div class="wrap waitlist__inner">
+    <div class="formcard paper-card reveal">
+      <p class="eyebrow eyebrow--slate">Lista de espera</p>
+      <h2 class="h-display">Guarda tu lugar en la mesa.</h2>
+      <svg class="wave wave--gold" aria-hidden="true"><use href="#wave"/></svg>
+      <p class="formcard__lead">Déjanos tu correo y te avisamos primero, antes de que abra el Lote Fundador. Sin ruido. Solo lo importante.</p>
+
+      <form id="waitlist" novalidate autocomplete="on">
+        <div class="field">
+          <label for="email">Correo electrónico <span class="req" aria-hidden="true">*</span></label>
+          <input id="email" name="email" type="email" inputmode="email" autocomplete="email" placeholder="tu@correo.com" required />
+          <small class="err" id="email-err" role="alert" hidden></small>
+        </div>
+        <div class="field">
+          <label for="instagram">Instagram <span class="opt">(opcional)</span></label>
+          <div class="ig"><span aria-hidden="true">@</span><input id="instagram" name="instagram" type="text" inputmode="text" autocomplete="off" autocapitalize="off" placeholder="tu.usuario" pattern="[A-Za-z0-9._]{1,30}" /></div>
+          <small class="err" id="ig-err" role="alert" hidden></small>
+        </div>
+        <div class="field field--check">
+          <input id="consent" name="consent" type="checkbox" required />
+          <label for="consent">Acepto el <a href="#aviso" data-open-aviso>Aviso de Privacidad</a> y deseo recibir avisos del lanzamiento de PÁSALA. <span class="req" aria-hidden="true">*</span></label>
+          <small class="err" id="consent-err" role="alert" hidden></small>
+        </div>
+        <!-- honeypot anti-bots -->
+        <input class="hp" type="text" name="website" tabindex="-1" autocomplete="off" aria-hidden="true" />
+        <button class="btn btn--navy btn--block" type="submit" id="submitbtn">Quiero entrar a la lista</button>
+        <p class="form-error" id="form-error" role="alert" hidden>Algo no salió bien. Revisa tus datos e inténtalo de nuevo.</p>
+      </form>
+
+      <div class="thanks" id="thanks" hidden tabindex="-1">
+        <svg class="gem-lg" viewBox="0 0 20 22" aria-hidden="true"><use href="#gem"/></svg>
+        <p class="serif thanks__t">Gracias. Ya tienes un lugar en la mesa.</p>
+        <p>Te escribiremos pronto. Mientras tanto… <em>¿qué estás pasando?</em></p>
+      </div>
+
+      <p class="devnote"><span class="ph">[PLACEHOLDER · sin backend aún] Por ahora tu registro se guarda solo en este navegador (localStorage). Conectar endpoint antes de publicar.</span></p>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 8 · CONTACTO ============ -->
+<section class="contact photo dark" id="contacto">
+  <div class="photo__img photo__img--soft" data-parallax="0.06"><img src="img/dusk-manos.jpg" alt="" loading="lazy" /></div>
+  <div class="photo__veil contact__veil"></div>
+  <div class="wrap contact__grid">
+    <div>
+      <p class="eyebrow reveal">Hablemos</p>
+      <h2 class="h-display h-display--light reveal">¿Una pregunta, una alianza, una historia que quieras pasar?</h2>
+    </div>
+    <ul class="contact__list reveal">
+      <li><span>Correo</span><b class="ph">[correo de contacto — p. ej. hola@dominio]</b></li>
+      <li><span>WhatsApp</span><b class="ph">[número de WhatsApp Business]</b></li>
+      <li><span>Base</span><b>Guadalajara, Jalisco, México</b></li>
+      <li><span>Prensa y colaboraciones</span><b class="ph">[correo de prensa, si es distinto]</b></li>
+    </ul>
+  </div>
+</section>
+
+<!-- ============ 9 · REDES ============ -->
+<section class="social paper" id="redes">
+  <div class="wrap social__inner">
+    <p class="eyebrow eyebrow--slate reveal">Encuéntranos</p>
+    <ul class="social__list reveal">
+      <li><span class="ico" aria-hidden="true"><svg viewBox="0 0 24 24"><rect x="3.5" y="3.5" width="17" height="17" rx="5" fill="none" stroke="currentColor" stroke-width="1.5"/><circle cx="12" cy="12" r="4" fill="none" stroke="currentColor" stroke-width="1.5"/><circle cx="17" cy="7" r="1" fill="currentColor"/></svg></span><b>Instagram</b> <span class="ph">[@usuario]</span></li>
+      <li><span class="ico" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M14 8h2.5V5H14c-2.2 0-3.5 1.4-3.5 3.6V11H8v3h2.5v6h3v-6H16l.5-3h-3V9c0-.6.3-1 .9-1z" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"/></svg></span><b>Facebook</b> <span class="ph">[URL de la página]</span></li>
+      <li><span class="ico" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M14 4v9.5a3.5 3.5 0 1 1-3.5-3.5M14 4c.4 2.4 2 3.8 4.5 4" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></span><b>TikTok</b> <span class="ph">[@usuario]</span></li>
+    </ul>
+    <blockquote class="social__quote serif reveal">«Elegir desde el amor es libertad.»</blockquote>
+  </div>
+</section>
+
+</main>
+
+<!-- ============ 10 · FOOTER ============ -->
+<footer class="footer">
+  <div class="wrap footer__inner">
+    <div class="footer__brand">
+      <span class="brand__word brand__word--lg" aria-label="PÁSALA">P<span class="brand__a">A<svg class="brand__gem" viewBox="0 0 20 22" aria-hidden="true"><use href="#gem"/></svg></span>SALA</span>
+      <p>Sal de mar de México</p>
+      <p class="serif footer__tag">¿Y si miras de nuevo?</p>
+    </div>
+    <nav class="footer__legal" aria-label="Legal">
+      <a href="#aviso" data-open-aviso>Aviso de Privacidad</a>
+      <span class="ph">Términos y condiciones [cuando estén]</span>
+    </nav>
+    <p class="footer__copy">© 2026 <span class="ph">[RAZÓN SOCIAL]</span>. Todos los derechos reservados.</p>
+  </div>
+</footer>
+
+<!-- ============ AVISO DE PRIVACIDAD (placeholder) ============ -->
+<dialog class="modal" id="aviso" aria-labelledby="aviso-t">
+  <form method="dialog" class="modal__box">
+    <h2 id="aviso-t" class="serif">Aviso de Privacidad</h2>
+    <p><span class="ph">[PLACEHOLDER — Aviso de Privacidad pendiente de redacción y revisión legal (LFPDPPP). No se ha incluido texto legal en esta maqueta.]</span></p>
+    <p class="fine">Responsable: <span class="ph">[RAZÓN SOCIAL / NOMBRE]</span> · Domicilio: <span class="ph">[DOMICILIO COMPLETO]</span> · Contacto de privacidad: <span class="ph">[CORREO PARA PRIVACIDAD]</span></p>
+    <button class="btn btn--navy" value="cerrar">Cerrar</button>
+  </form>
+</dialog>
+
+<script src="main.js"></script>
+</body>
+</html>
