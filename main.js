@@ -1,113 +1,127 @@
-/* PÁSALA landing · main.js */
+/* PÁSALA landing v2 · main.js */
 (function () {
   'use strict';
-  var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-  /* --- nav: fondo sólido al bajar + menú móvil --- */
+  /* ============ CONFIGURACIÓN ============
+     Endpoint de la lista de espera (POST JSON: {email, source, ts}).
+     null = sin endpoint todavía → en producción el formulario muestra un error honesto
+     (NO finge que guardó el correo). Ejemplos: 'https://formspree.io/f/xxxx' o una función serverless. */
+  var WAITLIST_ENDPOINT = 'https://api.web3forms.com/submit';
+  var W3F_ACCESS_KEY = 'a157a927-4cd1-4eb0-b6fd-b296db2964bb';
+  var SOURCE = 'landing-v2';
+  var TIMEOUT_MS = 12000;
+  /* Modo desarrollo: SOLO en localhost y con ?dev=1 se guarda en localStorage para probar la interfaz. */
+  var IS_DEV = /^(localhost|127\.0\.0\.1|\[::1\])$/.test(location.hostname) && /[?&]dev=1\b/.test(location.search);
+  var LS_KEY = 'pasala_waitlist_dev';
+
+  var MSG = {
+    emailInvalid: 'Escribe un correo válido, por ejemplo nombre@correo.com.',
+    noEndpoint: 'El registro todavía no está abierto en esta página. Vuelve pronto, por favor.',
+    network: 'No pudimos enviar tu correo. Revisa tu conexión e inténtalo de nuevo.',
+    server: 'Algo falló de nuestro lado y no se guardó tu correo. Inténtalo de nuevo en unos minutos.',
+    sending: 'Enviando…',
+    cta: 'Quiero mi lugar en la lista'
+  };
+
+  var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   var nav = document.getElementById('nav');
   var toggle = document.getElementById('navtoggle');
-  function onScroll() { nav.classList.toggle('is-solid', window.scrollY > 40); }
-  onScroll(); window.addEventListener('scroll', onScroll, { passive: true });
-  toggle.addEventListener('click', function () {
-    var open = nav.classList.toggle('is-open');
-    toggle.setAttribute('aria-expanded', open); document.body.style.overflow = open ? 'hidden' : '';
-  });
-  document.querySelectorAll('#navlinks a').forEach(function (a) {
-    a.addEventListener('click', function () { nav.classList.remove('is-open'); toggle.setAttribute('aria-expanded', false); document.body.style.overflow = ''; });
-  });
+  var links = document.getElementById('navlinks');
+  var mqMobile = window.matchMedia('(max-width: 899px)');
 
-  /* --- reveal on scroll --- */
-  var items = document.querySelectorAll('.reveal, .reveal-img');
+  /* --- menú móvil: abre/cierra, Escape, foco atrapado, aria-label dinámico --- */
+  function setMenu(open, returnFocus) {
+    nav.classList.toggle('is-open', open);
+    toggle.setAttribute('aria-expanded', String(open));
+    toggle.setAttribute('aria-label', open ? 'Cerrar menú' : 'Abrir menú');
+    document.body.style.overflow = open ? 'hidden' : '';
+    if (!open && returnFocus) toggle.focus();
+  }
+  toggle.addEventListener('click', function () { setMenu(!nav.classList.contains('is-open')); });
+  links.addEventListener('click', function (e) { if (e.target.closest('a')) setMenu(false); });
+  document.addEventListener('keydown', function (e) {
+    if (!nav.classList.contains('is-open')) return;
+    if (e.key === 'Escape') { setMenu(false, true); return; }
+    if (e.key === 'Tab') {
+      var f = [toggle].concat(Array.prototype.slice.call(links.querySelectorAll('a')));
+      var first = f[0], last = f[f.length - 1];
+      if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last.focus(); }
+      else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
+    }
+  });
+  mqMobile.addEventListener && mqMobile.addEventListener('change', function (m) { if (!m.matches) setMenu(false); });
+
+  /* --- aparición al hacer scroll (solo si hay JS; sin JS todo se ve) --- */
+  var items = document.querySelectorAll('.reveal');
   if ('IntersectionObserver' in window && !reduce) {
     var io = new IntersectionObserver(function (es) {
       es.forEach(function (e) { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } });
-    }, { threshold: 0.12, rootMargin: '0px 0px -6% 0px' });
+    }, { threshold: 0.1, rootMargin: '0px 0px -5% 0px' });
     items.forEach(function (el) { io.observe(el); });
   } else { items.forEach(function (el) { el.classList.add('in'); }); }
 
-  /* --- parallax suave en fotos full-screen --- */
-  var px = Array.prototype.slice.call(document.querySelectorAll('[data-parallax]'));
-  if (px.length && !reduce) {
-    var ticking = false;
-    var upd = function () {
-      var vh = window.innerHeight;
-      px.forEach(function (el) {
-        var r = el.parentElement.getBoundingClientRect();
-        if (r.bottom < -100 || r.top > vh + 100) return;
-        var k = parseFloat(el.dataset.parallax) || 0.1;
-        var off = (r.top + r.height / 2 - vh / 2) * -k;
-        el.style.transform = 'translate3d(0,' + off.toFixed(1) + 'px,0)';
-      });
-      ticking = false;
-    };
-    window.addEventListener('scroll', function () { if (!ticking) { ticking = true; requestAnimationFrame(upd); } }, { passive: true });
-    window.addEventListener('resize', upd); upd();
+  /* --- CTA fijo en móvil: aparece cuando el botón del hero sale de la pantalla y se oculta en el formulario --- */
+  var sticky = document.getElementById('stickycta');
+  var heroCta = document.querySelector('.hero__cta .btn');
+  var formSec = document.getElementById('lista');
+  if (sticky && heroCta && formSec && 'IntersectionObserver' in window) {
+    var heroOut = false, formIn = false;
+    var upd = function () { sticky.classList.toggle('is-on', heroOut && !formIn); };
+    new IntersectionObserver(function (es) {
+      var r = es[0]; heroOut = !r.isIntersecting && r.boundingClientRect.top < 0; upd();
+    }).observe(heroCta);
+    new IntersectionObserver(function (es) { formIn = es[0].isIntersecting; upd(); }, { threshold: 0.15 }).observe(formSec);
   }
 
-  /* --- aviso de privacidad (placeholder) --- */
-  var dlg = document.getElementById('aviso');
-  document.querySelectorAll('[data-open-aviso]').forEach(function (a) {
-    a.addEventListener('click', function (e) { e.preventDefault(); if (dlg.showModal) dlg.showModal(); else dlg.setAttribute('open', ''); });
-  });
-
-  /* --- formulario lista de espera --- */
+  /* --- formulario --- */
   var form = document.getElementById('waitlist');
   var thanks = document.getElementById('thanks');
   var formError = document.getElementById('form-error');
   var btn = document.getElementById('submitbtn');
 
-  // TODO(ENDPOINT): reemplazar por la URL real (Formspree, Google Apps Script, Notion API vía función serverless, etc.)
-  // Mientras sea null, el registro SOLO se guarda en localStorage de este navegador (placeholder, no llega a nadie).
-  var WAITLIST_ENDPOINT = null;
-  var LS_KEY = 'pasala_waitlist_v1';
-
   function setErr(id, msg) {
     var el = document.getElementById(id); var field = el.closest('.field');
-    if (msg) { el.textContent = msg; el.hidden = false; field.classList.add('invalid'); }
-    else { el.hidden = true; field.classList.remove('invalid'); }
+    if (msg) { el.textContent = msg; el.hidden = false; field.classList.add('invalid'); form.email.setAttribute('aria-invalid', 'true'); }
+    else { el.hidden = true; field.classList.remove('invalid'); form.email.removeAttribute('aria-invalid'); }
   }
-  function validate() {
-    var ok = true;
-    var email = form.email.value.trim();
-    if (!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(email)) { setErr('email-err', 'Escribe un correo válido.'); ok = false; } else setErr('email-err');
-    var ig = form.instagram.value.trim().replace(/^@/, '');
-    if (ig && !/^[A-Za-z0-9._]{1,30}$/.test(ig)) { setErr('ig-err', 'Usuario de Instagram no válido (letras, números, punto y guion bajo).'); ok = false; } else setErr('ig-err');
-    if (!form.consent.checked) { setErr('consent-err', 'Necesitamos que aceptes el Aviso de Privacidad.'); ok = false; } else setErr('consent-err');
-    return ok;
-  }
+  function showError(msg) { formError.textContent = msg; formError.hidden = false; btn.disabled = false; btn.textContent = MSG.cta; }
 
-  function saveLocal(rec) {
-    var list = []; try { list = JSON.parse(localStorage.getItem(LS_KEY) || '[]'); } catch (e) {}
-    list.push(rec); localStorage.setItem(LS_KEY, JSON.stringify(list));
-  }
-
-  // >>> PLACEHOLDER submit handler <<<
-  function submitWaitlist(rec) {
+  function send(rec) {
     if (WAITLIST_ENDPOINT) {
-      return fetch(WAITLIST_ENDPOINT, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(rec) })
-        .then(function (r) { if (!r.ok) throw new Error('HTTP ' + r.status); saveLocal(rec); });
+      var ctrl = ('AbortController' in window) ? new AbortController() : null;
+      var t = ctrl && setTimeout(function () { ctrl.abort(); }, TIMEOUT_MS);
+      return fetch(WAITLIST_ENDPOINT, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+        body: JSON.stringify({ access_key: W3F_ACCESS_KEY, subject: 'Nuevo registro lista PÁSALA', from_name: 'Landing PÁSALA', email: rec.email, source: rec.source, ts: rec.ts, botcheck: false }),
+        signal: ctrl ? ctrl.signal : undefined
+      }).then(function (r) {
+        if (t) clearTimeout(t);
+        if (!r.ok) { var e = new Error('HTTP ' + r.status); e.kind = 'server'; throw e; }
+        return r.json().then(function (j) { if (!j || j.success !== true) { var e2 = new Error('rejected'); e2.kind = 'server'; throw e2; } }, function () { var e3 = new Error('bad-json'); e3.kind = 'server'; throw e3; });
+      }, function () { if (t) clearTimeout(t); var e = new Error('network'); e.kind = 'network'; throw e; });
     }
-    saveLocal(rec);           // TODO: quitar cuando exista backend
-    return Promise.resolve(); // simula éxito
+    if (IS_DEV) { // solo desarrollo local con ?dev=1
+      var list = []; try { list = JSON.parse(localStorage.getItem(LS_KEY) || '[]'); } catch (e) {}
+      list.push(rec); localStorage.setItem(LS_KEY, JSON.stringify(list));
+      return Promise.resolve();
+    }
+    var err = new Error('no-endpoint'); err.kind = 'none';
+    return Promise.reject(err);
   }
 
   form.addEventListener('submit', function (e) {
     e.preventDefault(); formError.hidden = true;
     if (form.website.value) return; // honeypot
-    if (!validate()) { var bad = form.querySelector('.invalid input'); if (bad) bad.focus(); return; }
-    var rec = {
-      email: form.email.value.trim().toLowerCase(),
-      instagram: form.instagram.value.trim().replace(/^@/, '') || null,
-      consent: true,
-      source: 'landing-v1',
-      ts: new Date().toISOString()
-    };
-    btn.disabled = true; btn.textContent = 'Enviando…';
-    submitWaitlist(rec).then(function () {
+    var email = form.email.value.trim();
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(email)) { setErr('email-err', MSG.emailInvalid); form.email.focus(); return; }
+    setErr('email-err');
+    btn.disabled = true; btn.textContent = MSG.sending;
+    send({ email: email.toLowerCase(), source: SOURCE, ts: new Date().toISOString() }).then(function () {
       form.hidden = true; thanks.hidden = false; thanks.focus();
-    }).catch(function () {
-      formError.hidden = false; btn.disabled = false; btn.textContent = 'Quiero entrar a la lista';
+    }).catch(function (err) {
+      showError(err.kind === 'none' ? MSG.noEndpoint : err.kind === 'server' ? MSG.server : MSG.network);
     });
   });
-  form.addEventListener('input', function (e) { var id = e.target.id; if (id) setErr(id + '-err'); });
+  form.addEventListener('input', function () { setErr('email-err'); });
 })();

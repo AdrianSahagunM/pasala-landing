@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://adriansahagunm.github.io/pasala-landing/sitemap.xml
