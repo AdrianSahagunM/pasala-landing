@@ -2,7 +2,7 @@
 <html lang="es-MX" class="no-js">
 <head>
 <meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, interactive-widget=resizes-content" />
 <script>document.documentElement.className=document.documentElement.className.replace('no-js','js');</script>
 <title>PÁSALA · ¿Y si miras de nuevo?</title>
 <meta name="description" content="PÁSALA es una marca de sal de mar de México que usa un gesto cotidiano para invitarte a mirar de nuevo. Lista gratuita de los primeros 100: cien frascos numerados." />
@@ -87,7 +87,7 @@
       <a class="btn btn--gold" href="#lista">Quiero mi lugar en la lista</a>
       <a class="link-soft" href="#historia">Lee la historia <span aria-hidden="true">↓</span></a>
     </div>
-    <p class="note hero__note">Apuntarte es gratis y no te obliga a comprar.</p>
+    <p class="note hero__note">Apuntarte es gratis y tú decides el siguiente paso.</p>
   </div>
 </section>
 
@@ -333,7 +333,7 @@
     <p class="reveal fv__lead">Hoy simplemente dejas tu correo — así de simple. Cuando los primeros 100 frascos estén listos, te escribimos antes que al público, y ahí decides con calma si quieres tomar tu lugar.</p>
     <p class="reveal">PÁSALA quiere encontrar a las personas a quienes esto realmente les resuena.</p>
     <p class="reveal ft__cta"><a class="btn btn--navy" href="#lista">Quiero estar entre los 100</a></p>
-    <p class="note reveal">Registro gratuito. Sin compromiso de compra.</p>
+    <p class="note reveal">Tu lugar es gratuito y tú decides el siguiente paso.</p>
   </div>
 </section>
 
@@ -368,26 +368,41 @@
 <!-- 9 · CIERRE -->
 <section class="waitlist sec" id="lista" aria-labelledby="h-lista">
   <div class="wrap waitlist__inner">
-    <h2 id="h-lista" class="reveal">No venimos a decirte qué mirar. Venimos a invitarte a mirar de nuevo.</h2>
+    <h2 id="h-lista" class="reveal">Venimos a invitarte a mirar de nuevo.</h2>
     <span class="brand__word brand__word--lg reveal" role="img" aria-label="PÁSALA">P<span class="brand__a">A<svg class="brand__gem" viewBox="0 0 20 22" aria-hidden="true"><use href="#gem"/></svg></span>SALA</span>
     <div class="formbox reveal">
-      <p>Escribe tu correo y te avisamos antes de que se abra la venta de los 100 frascos.</p>
+      <div class="formbox__intro" id="form-intro">
+        <h3 class="formbox__t">Gracias por llegar hasta aquí.</h3>
+        <p>Esto apenas empieza, y ya lo vamos construyendo juntos. Déjame tu nombre y tu correo, y te aviso yo primero.</p>
+      </div>
       <form id="waitlist" novalidate autocomplete="on">
         <div class="field">
+          <label for="nombre">Tu nombre</label>
+          <input id="nombre" name="name" type="text" autocomplete="name" autocapitalize="words" enterkeyhint="next" spellcheck="false" required aria-describedby="nombre-err" />
+          <small class="err" id="nombre-err" role="alert" hidden></small>
+        </div>
+        <div class="field">
           <label for="email">Tu correo</label>
-          <input id="email" name="email" type="email" inputmode="email" autocomplete="email" placeholder="tu@correo.com" required aria-describedby="email-err consent" />
+          <input id="email" name="email" type="email" inputmode="email" autocomplete="email" autocapitalize="none" enterkeyhint="next" spellcheck="false" placeholder="nombre@correo.com" required aria-describedby="email-err" />
           <small class="err" id="email-err" role="alert" hidden></small>
         </div>
         <input class="hp" type="text" name="website" tabindex="-1" autocomplete="off" aria-hidden="true" />
+        <div class="field field--check">
+          <input id="consent-box" name="consent" type="checkbox" required aria-describedby="consent-err" />
+          <!-- MARCADOR: el aviso de privacidad aún no existe (TODO-datos-v3.md #6). Sustituir href="#aviso-privacidad" por la URL real cuando esté redactado y revisado. -->
+          <label for="consent-box">Acepto el <a href="#aviso-privacidad" data-pendiente="aviso-de-privacidad">aviso de privacidad</a>.</label>
+          <small class="err" id="consent-err" role="alert" hidden></small>
+        </div>
         <button class="btn btn--navy btn--block" type="submit" id="submitbtn">Quiero estar entre los 100</button>
-        <p class="note formbox__free">Registro gratuito. Sin compromiso de compra.</p>
-        <p class="note consent" id="consent">Solo usaremos tu correo para avisarte de los primeros 100. Puedes salirte cuando quieras.</p>
+        <p class="note formbox__free">Tu lugar es gratuito y tú decides el siguiente paso.</p>
         <p class="form-error" id="form-error" role="alert" hidden></p>
-        <noscript><p class="form-error">Para apuntarte necesitas activar JavaScript en tu navegador.</p></noscript>
+        <noscript><p class="form-error">Para apuntarte, activa JavaScript en tu navegador y vuelve a esta página.</p></noscript>
       </form>
       <div class="thanks" id="thanks" hidden tabindex="-1" role="status">
         <svg class="gem-lg" viewBox="0 0 20 22" aria-hidden="true"><use href="#gem"/></svg>
-        <p class="thanks__t">Listo. Te avisaremos por correo antes de abrir la venta de los 100 frascos.</p>
+        <p class="thanks__t">Gracias por confiar.</p>
+        <p class="thanks__d">Ya estás dentro. Vamos avanzando juntos, y en cuanto haya algo que contarte, te escribo yo.</p>
+        <p class="thanks__sign">Adrián</p>
       </div>
     </div>
   </div>

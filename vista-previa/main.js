@@ -15,10 +15,13 @@
   var LS_KEY = 'pasala_waitlist_dev';
 
   var MSG = {
-    emailInvalid: 'Escribe un correo válido, por ejemplo nombre@correo.com.',
-    noEndpoint: 'El registro todavía no está abierto en esta página. Vuelve pronto, por favor.',
-    network: 'No pudimos enviar tu correo. Revisa tu conexión e inténtalo de nuevo.',
-    server: 'Algo falló de nuestro lado y no se guardó tu correo. Inténtalo de nuevo en unos minutos.',
+    nameEmpty: 'Escribe tu nombre para saber a quién agradecer.',
+    emailEmpty: 'Cuéntame tu correo para poder escribirte.',
+    emailInvalid: 'Revisa tu correo con calma; con un formato como nombre@correo.com podré escribirte.',
+    consent: 'Marca esta casilla para que sigamos avanzando juntos.',
+    noEndpoint: 'El registro se abre muy pronto. Vuelve a visitarnos, aquí te esperamos.',
+    network: 'Tu conexión se interrumpió un momento. Revisa que esté activa e inténtalo otra vez; tu lugar te espera.',
+    server: 'Algo se detuvo de nuestro lado. Inténtalo otra vez en unos minutos; tu lugar te espera.',
     sending: 'Enviando…',
     cta: 'Quiero estar entre los 100'
   };
@@ -60,16 +63,18 @@
     items.forEach(function (el) { io.observe(el); });
   } else { items.forEach(function (el) { el.classList.add('in'); }); }
 
-  /* --- formulario --- */
+  /* --- formulario: nombre y correo obligatorios, consentimiento, mismo envío por Web3Forms --- */
   var form = document.getElementById('waitlist');
   var thanks = document.getElementById('thanks');
+  var intro = document.getElementById('form-intro');
   var formError = document.getElementById('form-error');
   var btn = document.getElementById('submitbtn');
+  var FIELDS = { name: 'nombre-err', email: 'email-err', consent: 'consent-err' };
 
-  function setErr(id, msg) {
-    var el = document.getElementById(id); var field = el.closest('.field');
-    if (msg) { el.textContent = msg; el.hidden = false; field.classList.add('invalid'); form.email.setAttribute('aria-invalid', 'true'); }
-    else { el.hidden = true; field.classList.remove('invalid'); form.email.removeAttribute('aria-invalid'); }
+  function setErr(name, msg) {
+    var el = document.getElementById(FIELDS[name]); var input = form.elements[name]; var field = el.closest('.field');
+    if (msg) { el.textContent = msg; el.hidden = false; field.classList.add('invalid'); input.setAttribute('aria-invalid', 'true'); }
+    else { el.hidden = true; field.classList.remove('invalid'); input.removeAttribute('aria-invalid'); }
   }
   function showError(msg) { formError.textContent = msg; formError.hidden = false; btn.disabled = false; btn.textContent = MSG.cta; }
 
@@ -80,7 +85,7 @@
       return fetch(WAITLIST_ENDPOINT, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
-        body: JSON.stringify({ access_key: W3F_ACCESS_KEY, subject: 'Nuevo registro lista PÁSALA', from_name: 'Landing PÁSALA', email: rec.email, source: rec.source, ts: rec.ts, botcheck: false }),
+        body: JSON.stringify({ access_key: W3F_ACCESS_KEY, subject: 'Nuevo registro lista PÁSALA', from_name: 'Landing PÁSALA', name: rec.name, email: rec.email, consent: rec.consent, source: rec.source, ts: rec.ts, botcheck: false }),
         signal: ctrl ? ctrl.signal : undefined
       }).then(function (r) {
         if (t) clearTimeout(t);
@@ -100,15 +105,36 @@
   form.addEventListener('submit', function (e) {
     e.preventDefault(); formError.hidden = true;
     if (form.website.value) return; // honeypot
+    var name = form.name.value.trim().replace(/\s+/g, ' ');
     var email = form.email.value.trim();
-    if (!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(email)) { setErr('email-err', MSG.emailInvalid); form.email.focus(); return; }
-    setErr('email-err');
+    var first = null;
+    var bad = function (field, msg) { setErr(field, msg); if (!first) first = form.elements[field]; };
+    if (!name) bad('name', MSG.nameEmpty); else setErr('name');
+    if (!email) bad('email', MSG.emailEmpty);
+    else if (!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(email)) bad('email', MSG.emailInvalid);
+    else setErr('email');
+    if (!form.consent.checked) bad('consent', MSG.consent); else setErr('consent');
+    if (first) { first.focus(); return; }
     btn.disabled = true; btn.textContent = MSG.sending;
-    send({ email: email.toLowerCase(), source: SOURCE, ts: new Date().toISOString() }).then(function () {
-      form.hidden = true; thanks.hidden = false; thanks.focus();
+    send({ name: name, email: email.toLowerCase(), consent: true, source: SOURCE, ts: new Date().toISOString() }).then(function () {
+      form.hidden = true; if (intro) intro.hidden = true; thanks.hidden = false; thanks.focus();
     }).catch(function (err) {
       showError(err.kind === 'none' ? MSG.noEndpoint : err.kind === 'server' ? MSG.server : MSG.network);
     });
   });
-  form.addEventListener('input', function () { setErr('email-err'); });
+  form.addEventListener('input', function (e) { var n = e.target && e.target.name; if (FIELDS[n]) setErr(n); });
+  form.addEventListener('change', function (e) { var n = e.target && e.target.name; if (FIELDS[n]) setErr(n); });
+
+  /* con el teclado abierto en móvil, mantener a la vista el campo y el botón */
+  form.addEventListener('focusin', function (e) {
+    if (!e.target.matches('input')) return;
+    setTimeout(function () {
+      var vv = window.visualViewport, h = vv ? vv.height : window.innerHeight;
+      var r = btn.getBoundingClientRect(), f = e.target.getBoundingClientRect();
+      var dy = 0;
+      if (r.bottom > h - 8) dy = Math.min(r.bottom - h + 16, f.top - 16);
+      else if (f.top < 8) dy = f.top - 16;
+      if (dy) window.scrollBy({ top: dy, behavior: reduce ? 'auto' : 'smooth' });
+    }, 300);
+  });
 })();
